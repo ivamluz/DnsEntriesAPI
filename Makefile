@@ -53,7 +53,7 @@ clear-db: stop
 	docker volume rm $(current_dir)_pg_{development,test,production}_data 2>/dev/null || true
 
 create-app:
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml run -w /opt/app dns-api-server  /bin/bash -c "bundle install; bundle exec rails new . --api --force --no-deps --database=postgresql; bundle update;"
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml run -w /opt/application/api dns-api-server  /bin/bash -c "bundle install; bundle exec rails new . --api --force --no-deps --database=postgresql; bundle update;"
 
 $(envfile):
 	@echo "Error: .env file does not exist! See the README for instructions."
