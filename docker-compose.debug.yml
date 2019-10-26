@@ -1,0 +1,13 @@
+# this file overrides docker-compose.yml. the should be run together, e.g.
+#   docker-compose -f docker-compose.yml -f docker-compose.debug.yml up
+
+version: "3.4"
+
+services:
+  dns-api-server:
+    build: ./server
+    image: ruby:2.6.5
+    volumes:
+      - ./server:/opt/app
+    environment:
+      RAILS_ENV:

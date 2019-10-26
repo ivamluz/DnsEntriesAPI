@@ -1,0 +1,33 @@
+version: "3.4"
+
+x-common-variables: &common-variables
+  POSTGRES_DB:
+  POSTGRES_USER:
+  POSTGRES_PASSWORD:
+
+volumes:
+  pg_development_data:
+  pg_test_data:
+  pg_production_data:
+
+services:
+  db:
+    image: postgres:11.2
+    volumes:
+      - ./database/init:/docker-entrypoint-initdb.d
+      - "pg_${RAILS_ENV}_data:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+    environment: *common-variables
+
+  dns-api-server:
+    build: ./server
+    image: ruby:2.6.5
+    ports:
+      - 3000:3000
+    environment:
+      <<: *common-variables
+      DB_PORT: 5432
+      DB_HOST_NAME: db
+    depends_on:
+      - db
