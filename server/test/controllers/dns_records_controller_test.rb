@@ -34,29 +34,25 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @expected_response.to_json, @response.body
   end
 
-  test 'post request' do
-    post dns_records_url, params: {
-      dns_records: {
-        ip: '1.1.1.1',
-        hostnames_attributes: [
-          {
-            hostname: 'lorem.com'
-          }
-        ]
-      }
-    }
+  test 'Should return DNS Record ID when a new record is created' do
+    payload = build_post_payload('100.100.100.100', [])
+    post dns_records_url, params: payload
 
     assert_response :success
     assert_equal 'application/json', @response.media_type
 
-    @expected_response = {
-      id: 1,
-    }
-
-    assert_equal @expected_response.to_json, @response.body
+    id = response.parsed_body["id"]
+    
+    assert_not_nil id
+    assert id > 0
   end
 
-  test 'Should create DNS record with without hostnames' do
+  test 'Should return DNS Record ID when an existing record is updated' do
+
+  end  
+
+  test 'Should create DNS record without hostnames' do
+  
   end
 
   test 'Should create DNS record with single hostname' do
@@ -72,5 +68,14 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Should update existing DNS record with multiple hostnames without duplicating' do
+  end
+
+  def build_post_payload(ip, hostnames)
+    return {
+      dns_records: {
+        ip: ip,
+        hostnames_attributes: hostnames.map{ |h| { hostname: h } }
+      }
+    }
   end
 end
