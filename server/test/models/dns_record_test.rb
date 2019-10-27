@@ -80,6 +80,14 @@ class DnsRecordTest < ActiveSupport::TestCase
     assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
+  test 'Should filter duplicate hostnames' do
+    ip = '100.100.100.100'
+    hostnames = ['sit.com', 'amet.com', 'sit.com', 'amet.com']
+
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, ['sit.com', 'amet.com'])
+  end
+
   def assert_dns_record_creation_with_hostnames(ip, hostnames)
     DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
     record = DnsRecord.find_by! ip: ip

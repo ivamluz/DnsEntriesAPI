@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_134838) do
     t.string "ip", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["ip"], name: "index_dns_records_on_ip"
+    t.index ["ip"], name: "index_dns_records_on_ip", unique: true
   end
 
   create_table "dns_records_hostnames", id: false, force: :cascade do |t|
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_134838) do
     t.string "hostname", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["hostname"], name: "index_hostnames_on_hostname"
+    t.index ["hostname"], name: "index_hostnames_on_hostname", unique: true
   end
 
   add_foreign_key "dns_records_hostnames", "dns_records"

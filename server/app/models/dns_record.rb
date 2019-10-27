@@ -5,9 +5,11 @@ class DnsRecord < ApplicationRecord
   validates :ip, presence: true, format: { with: Resolv::IPv4::Regex }
 
   def self.create_or_replace_with_hostnames!(ip, hostname_names)
-    hostnames = hostname_names.map do |hostname|
+    hostnames = hostname_names.uniq{ |hostname| 
+      hostname
+    }.map { |hostname|
       Hostname.where(hostname: hostname).first_or_initialize(hostname: hostname)
-    end
+    }
 
     record = DnsRecord.where(ip: ip).first_or_initialize(ip: ip)
     record.hostnames = hostnames

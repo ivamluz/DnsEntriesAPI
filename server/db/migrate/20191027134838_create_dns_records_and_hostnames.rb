@@ -5,16 +5,16 @@ class CreateDnsRecordsAndHostnames < ActiveRecord::Migration[5.2]
       t.timestamps
     end
     change_column_null :dns_records, :ip, false
-    add_index :dns_records, :ip
+    add_index :dns_records, :ip, unique: true
 
     create_table :hostnames do |t|
       t.string :hostname
       t.timestamps
     end
     change_column_null :hostnames, :hostname, false
-    add_index :hostnames, :hostname
+    add_index :hostnames, :hostname, unique: true
 
-    create_table :dns_records_hostnames, id: false do |t|
+    create_table :dns_records_hostnames, id: false, primary_key: [:dns_record_id, :hostname_id] do |t|
       t.belongs_to :dns_record, foreign_key: true
       t.belongs_to :hostname, foreign_key: true
     end

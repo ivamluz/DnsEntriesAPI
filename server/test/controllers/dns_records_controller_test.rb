@@ -66,20 +66,37 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
     payload = build_post_payload(ip, hostnames)
     post dns_records_url, params: payload
 
-    id = response.parsed_body["id"]
-    record = DnsRecord.find(id)
-
-    assert_equal record.ip, ip
-    assert_equal record.hostnames, hostnames
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should create DNS record with single hostname' do
+    ip = '100.100.100.100'
+    hostnames = ['sit.com']
+
+    payload = build_post_payload(ip, hostnames)
+    post dns_records_url, params: payload
+
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should create DNS record with multiple hostnames' do
+    ip = '100.100.100.100'
+    hostnames = ['sit.com', 'amet.com']
+
+    payload = build_post_payload(ip, hostnames)
+    post dns_records_url, params: payload
+
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should create DNS record with multiple hostnames filtering duplicates' do
+    ip = '100.100.100.100'
+    hostnames = ['sit.com', 'amet.com', 'sit.com', 'amet.com']
+
+    payload = build_post_payload(ip, hostnames)
+    post dns_records_url, params: payload
+
+    assert_ip_has_saved_hostnames(ip, ['sit.com', 'amet.com'])
   end
 
   test 'Should update existing DNS record with multiple hostnames' do
