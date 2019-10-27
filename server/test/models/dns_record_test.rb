@@ -43,4 +43,37 @@ class DnsRecordTest < ActiveSupport::TestCase
       assert record.invalid?, "#{reason}: #{ip}"
     end
   end
+
+  test 'Should create record without hostnames' do
+    assert_dns_record_creation_with_hostnames('10.10.10.10', [])
+  end
+
+  test 'Should create record with single hostname' do
+    hostnames = ['ipsum.com']
+    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+  end
+
+  test 'Should create record with multiple hostnames' do
+    hostnames = ['ipsum.com', 'amet.com']
+    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+  end
+
+  test 'Should replace associated hostnames' do
+    hostnames = ['ipsum.com', 'amet.com']
+    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+
+    assert_dns_record_creation_with_hostnames('10.10.10.10', ['sit.com'])
+  end
+
+  def assert_dns_record_creation_with_hostnames(ip, hostnames)
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    record = DnsRecord.find_by! ip: ip
+
+    saved_hostnames = record.hostnames.map do |hostname|
+      hostname.hostname
+    end
+
+    assert_equal ip, record.ip
+    assert_equal hostnames, saved_hostnames
+  end
 end

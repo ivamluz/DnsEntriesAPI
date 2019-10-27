@@ -28,13 +28,22 @@ class DnsRecordsController < ApplicationController
   end
 
   def create
-    logger.debug "Creating new DnsRecord with params: #{params[:foo]}"
+    permitted = params.require(:dns_records).permit(
+      :ip, 
+      hostnames_attributes: [:hostname]
+    )
 
-    result = {
-      id: 1
+    ip = permitted[:ip]
+
+    hostnames = permitted[:hostnames_attributes].map do |params|
+      params['hostname']
+    end
+
+    record = DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+
+    render json: {
+      id: record.id
     }
-
-    render json: result.to_json
   end
 
   def update

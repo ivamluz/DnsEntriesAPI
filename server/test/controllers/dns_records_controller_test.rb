@@ -60,7 +60,18 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
   end  
 
   test 'Should create DNS record without hostnames' do
-  
+    ip = '100.100.100.100'
+    hostnames = []
+
+    payload = build_post_payload(ip, hostnames)
+    post dns_records_url, params: payload
+
+    id = response.parsed_body["id"]
+
+    record = DnsRecord.find(id)
+
+    assert_equal record.ip, ip
+    assert_equal record.hostnames, hostnames
   end
 
   test 'Should create DNS record with single hostname' do
