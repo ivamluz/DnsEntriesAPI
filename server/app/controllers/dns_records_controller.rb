@@ -30,11 +30,11 @@ class DnsRecordsController < ApplicationController
   def create
     logger.debug "Creating new DnsRecord with params: #{params[:foo]}"
 
-    @result = {
+    result = {
       id: 1
     }
 
-    render json: @result.to_json
+    render json: result.to_json
   end
 
   def update

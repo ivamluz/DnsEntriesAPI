@@ -48,7 +48,15 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Should return DNS Record ID when an existing record is updated' do
+    payload = build_post_payload('100.100.100.100', [])
+    
+    post dns_records_url, params: payload
+    first_id = response.parsed_body["id"]
 
+    post dns_records_url, params: payload
+    second_id = response.parsed_body["id"]
+
+    assert_equal first_id, second_id
   end  
 
   test 'Should create DNS record without hostnames' do
