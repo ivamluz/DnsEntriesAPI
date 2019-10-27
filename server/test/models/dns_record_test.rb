@@ -45,24 +45,39 @@ class DnsRecordTest < ActiveSupport::TestCase
   end
 
   test 'Should create record without hostnames' do
-    assert_dns_record_creation_with_hostnames('10.10.10.10', [])
+    ip = '10.10.10.10'
+    hostnames = []
+
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should create record with single hostname' do
+    ip = '10.10.10.10'
     hostnames = ['ipsum.com']
-    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should create record with multiple hostnames' do
+    ip = '10.10.10.10'
     hostnames = ['ipsum.com', 'amet.com']
-    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   test 'Should replace associated hostnames' do
+    ip = '10.10.10.10'
     hostnames = ['ipsum.com', 'amet.com']
-    assert_dns_record_creation_with_hostnames('10.10.10.10', hostnames)
+    
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, hostnames)
 
-    assert_dns_record_creation_with_hostnames('10.10.10.10', ['sit.com'])
+    hostnames = ['sit.com']
+    DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 
   def assert_dns_record_creation_with_hostnames(ip, hostnames)

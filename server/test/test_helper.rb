@@ -7,4 +7,15 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  def assert_ip_has_saved_hostnames(ip, hostnames)
+    record = DnsRecord.find_by! ip: ip
+
+    saved_hostnames = record.hostnames.map do |hostname|
+      hostname.hostname
+    end
+
+    assert_equal ip, record.ip
+    assert_equal hostnames, saved_hostnames
+  end
 end

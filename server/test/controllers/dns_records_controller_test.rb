@@ -67,7 +67,6 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
     post dns_records_url, params: payload
 
     id = response.parsed_body["id"]
-
     record = DnsRecord.find(id)
 
     assert_equal record.ip, ip
