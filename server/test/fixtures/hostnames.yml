@@ -1,7 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  hostname: MyString
+lorem.com:
+  hostname: lorem.com
 
-two:
-  hostname: MyString
+ipsum.com:
+  hostname: ipsum.com
+
+dolor.com:
+  hostname: dolor.com
+
+amet.com:
+  hostname: amet.com
+
+sit.com:
+  hostname: sit.com

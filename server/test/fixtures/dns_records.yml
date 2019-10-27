@@ -1,7 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  ip: MyString
+dns_1:
+  ip: '1.1.1.1'
+  hostnames: lorem.com, ipsum.com, dolor.com, amet.com
 
-two:
-  ip: MyString
+dns_2:
+  ip: '2.2.2.2'
+  hostnames: ipsum.com
+
+dns_3:
+  ip: '3.3.3.3'
+  hostnames: ipsum.com, dolor.com, amet.com
+
+dns_4:
+  ip: '4.4.4.4'
+  hostnames: ipsum.com, dolor.com, sit.com, amet.com
+
+dns_5:
+  ip: '5.5.5.5'
+  hostnames: dolor.com, sit.com
