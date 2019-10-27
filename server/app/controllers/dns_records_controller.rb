@@ -20,6 +20,8 @@ class DnsRecordsController < ApplicationController
   end
 
   def create
+    logger.debug "Creating new DnsRecord with params: #{params[:foo]}"
+
     @result = {
       :id => 1,
     }
