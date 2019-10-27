@@ -1,17 +1,25 @@
 class DnsRecordsController < ApplicationController
   def show
     @result = {
-      total_records: 1,
+      total_records: 2,
       records: [
         {
           id: 1,
           ip_address: '1.1.1.1'
+        },
+        {
+          id: 3,
+          ip_address: '3.3.3.3'
         }
       ],
       related_hostnames: [
         {
           hostname: 'lorem.com',
-          count: 5
+          count: 1
+        },
+        {
+          hostname: 'amet.com',
+          count: 2
         }
       ]
     }
