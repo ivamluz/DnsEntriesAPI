@@ -55,4 +55,22 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @expected_response.to_json, @response.body
   end
+
+  test 'Should create DNS record with without hostnames' do
+  end
+
+  test 'Should create DNS record with single hostname' do
+  end
+
+  test 'Should create DNS record with multiple hostnames' do
+  end
+
+  test 'Should create DNS record with multiple hostnames filtering duplicates' do
+  end
+
+  test 'Should update existing DNS record with multiple hostnames' do
+  end
+
+  test 'Should update existing DNS record with multiple hostnames without duplicating' do
+  end
 end
