@@ -16,6 +16,6 @@ class ActiveSupport::TestCase
     end
 
     assert_equal ip, record.ip
-    assert_equal hostnames, saved_hostnames
+    assert_equal hostnames.to_set, saved_hostnames.to_set
   end
 end

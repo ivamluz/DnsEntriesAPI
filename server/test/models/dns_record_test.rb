@@ -93,6 +93,8 @@ class DnsRecordTest < ActiveSupport::TestCase
     excluded = ['sit.com']
     page = 1
     results = DnsRecord.filter_by_included_and_excluded(included, excluded, page)
+
+    # TODO: assert results (already done by on Controller test)
   end
 
   def assert_dns_record_creation_with_hostnames(ip, hostnames)
