@@ -5,7 +5,7 @@ class DnsRecord < ApplicationRecord
   validates :ip, presence: true, format: { with: Resolv::IPv4::Regex }
 
   def self.create_or_replace_with_hostnames!(ip, hostname_names)
-    hostnames = hostname_names.uniq{ |hostname| 
+    hostnames = hostname_names.uniq { |hostname|
       hostname
     }.map { |hostname|
       Hostname.where(hostname: hostname).first_or_initialize(hostname: hostname)
@@ -24,7 +24,7 @@ class DnsRecord < ApplicationRecord
 
     query = %q(
           SELECT r.id,
-                 r.ip, 
+                 r.ip,
                  h.hostname
             FROM dns_records r
                  INNER JOIN dns_records_hostnames rh
@@ -48,19 +48,19 @@ class DnsRecord < ApplicationRecord
            WHERE h.hostname not in (?)
     )
 
-    #TODO: check if there is a better place to do this transformation
+    # TODO: check if there is a better place to do this transformation
 
     dns_records = {}
     hostnames = {}
 
-    records = DnsRecord.find_by_sql([ query, included, excluded, included ])
+    records = DnsRecord.find_by_sql([query, included, excluded, included])
     records.each do |record|
       dns_records[record.id] = {
         id: record.id,
         ip_address: record.ip
       }
 
-      hostnames[record.hostname] = hostnames[record.hostname].to_i.succ      
+      hostnames[record.hostname] = hostnames[record.hostname].to_i.succ
     end
 
     result = {

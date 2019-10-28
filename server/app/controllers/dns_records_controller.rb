@@ -4,7 +4,7 @@ class DnsRecordsController < ApplicationController
 
     permitted = params.permit(
       :page,
-      included: [], 
+      included: [],
       excluded: []
     )
 
@@ -19,7 +19,7 @@ class DnsRecordsController < ApplicationController
 
   def create
     permitted = params.require(:dns_records).permit(
-      :ip, 
+      :ip,
       hostnames_attributes: [:hostname]
     )
 
