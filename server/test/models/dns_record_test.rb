@@ -97,13 +97,6 @@ class DnsRecordTest < ActiveSupport::TestCase
 
   def assert_dns_record_creation_with_hostnames(ip, hostnames)
     DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
-    record = DnsRecord.find_by! ip: ip
-
-    saved_hostnames = record.hostnames.map do |hostname|
-      hostname.hostname
-    end
-
-    assert_equal ip, record.ip
-    assert_equal hostnames, saved_hostnames
+    assert_ip_has_saved_hostnames(ip, hostnames)
   end
 end
