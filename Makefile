@@ -48,9 +48,9 @@ logs:
 stop:
 	docker-compose down
 
-## Clear the sandbox and development databases
+## Clear the development and test databases
 clear-db: stop
-	docker volume rm $(current_dir)_pg_{development,test,production}_data 2>/dev/null || true
+	docker volume rm $(current_dir)_pg_{development,test}_data 2>/dev/null || true
 
 $(envfile):
 	@echo "Error: .env file does not exist! See the README for instructions."
