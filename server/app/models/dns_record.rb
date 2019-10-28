@@ -35,17 +35,17 @@ class DnsRecord < ApplicationRecord
                         SELECT rh.dns_record_id
                           FROM dns_records_hostnames rh
                     INNER JOIN hostnames h ON rh.hostname_id = h.id
-                          WHERE h.hostname IN ('ipsum.com', 'dolor.com')
+                          WHERE h.hostname IN (?)
                       GROUP BY rh.dns_record_id
                         HAVING COUNT(DISTINCT h.hostname) = 2
                   EXCEPT
                         SELECT rh.dns_record_id
                           FROM dns_records_hostnames rh
                           JOIN hostnames h on rh.hostname_id = h.id
-                          WHERE h.hostname IN ('sit.com')
+                          WHERE h.hostname IN (?)
                  ) AS filtered
                          ON r.id = filtered.dns_record_id
-           WHERE h.hostname not in ('ipsum.com', 'dolor.com')
+           WHERE h.hostname not in (?)
     )
 
     #TODO: check if there is a better place to do this transformation
@@ -53,7 +53,7 @@ class DnsRecord < ApplicationRecord
     dns_records = {}
     hostnames = {}
 
-    records = DnsRecord.find_by_sql(query)
+    records = DnsRecord.find_by_sql([ query, included, excluded, included ])
     records.each do |record|
       dns_records[record.id] = {
         id: record.id,

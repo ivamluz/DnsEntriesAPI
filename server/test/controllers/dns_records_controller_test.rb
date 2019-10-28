@@ -13,7 +13,6 @@ class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
     }.to_h
     
     hostnames_by_hostname = response.parsed_body["related_hostnames"].map { |hostname| 
-      puts hostname
       [ hostname['hostname'], hostname['count'] ] 
     }.to_h
 
