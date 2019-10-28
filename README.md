@@ -1,4 +1,4 @@
-# README
+# DNS Entries API
 
 A simple API for storing DNS records (IP addresses) belonging to hostnames, developed with Ruby (v2.6.5) on Rails (v5.2.3).
 
@@ -34,7 +34,7 @@ A simple API for storing DNS records (IP addresses) belonging to hostnames, deve
 
 ## Database setup
 
-1. Check in what container the application is running. Run `docker ps` and take note of the ruby:2.6.5 container id. It should look similar to this:
+1. Check what container the application is running at. Run `docker ps` and take note of the ruby:2.6.5 container id. It should look similar to this:
 ```
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                              NAMES
@@ -180,6 +180,12 @@ curl 'http://localhost:3000/dns_records?included[]=ipsum.com&included[]=dolor.co
   ]
 }
 ```
+
+## TODOs
+* Use `page` argument to paginate DB results.
+* Check query performance with a bigger dataset.
+* Check if there is a better place transform the DB result into the API format. This is currently done inside the DnsRecord model.
+
 
 ## Wrapping-up
 When you're finished, stop the services.
