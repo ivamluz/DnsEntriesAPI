@@ -1,37 +1,34 @@
 require 'test_helper'
 
 class DnsRecordsControllerTest < ActionDispatch::IntegrationTest
-  test 'returns hard-coded value' do
-    get dns_records_url
+  test 'Should filter correctly by hostname' do
+    get dns_records_url, params: {
+      included: ['ipsum.com', 'dolor.com'], 
+      excluded: ['sit.com'],
+      page: 1
+    }
+
+    records_by_ip = response.parsed_body['records'].map { |record| 
+      [ record['ip_address'], record['id'] ] 
+    }.to_h
     
+    hostnames_by_hostname = response.parsed_body["related_hostnames"].map { |hostname| 
+      puts hostname
+      [ hostname['hostname'], hostname['count'] ] 
+    }.to_h
+
     assert_response :success
     assert_equal 'application/json', @response.media_type
     
-    @expected_response = {
-      total_records: 2,
-      records: [
-        {
-          id: 1,
-          ip_address: '1.1.1.1'
-        },
-        {
-          id: 3,
-          ip_address: '3.3.3.3'
-        }
-      ],
-      related_hostnames: [
-        {
-          hostname: 'lorem.com',
-          count: 1
-        },
-        {
-          hostname: 'amet.com',
-          count: 2
-        }
-      ]
-    }
+    assert_equal 2, response.parsed_body['total_records']
+    assert_equal 2, response.parsed_body['records'].length
+    assert_equal 2, response.parsed_body['related_hostnames'].length
 
-    assert_equal @expected_response.to_json, @response.body
+    assert_not_nil records_by_ip['1.1.1.1']
+    assert_not_nil records_by_ip['3.3.3.3']
+
+    assert_equal 1, hostnames_by_hostname['lorem.com']
+    assert_equal 2, hostnames_by_hostname['amet.com']
   end
 
   test 'Should return DNS Record ID when a new record is created' do

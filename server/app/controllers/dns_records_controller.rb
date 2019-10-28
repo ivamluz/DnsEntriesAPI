@@ -1,30 +1,20 @@
 class DnsRecordsController < ApplicationController
   def show
-    @result = {
-      total_records: 2,
-      records: [
-        {
-          id: 1,
-          ip_address: '1.1.1.1'
-        },
-        {
-          id: 3,
-          ip_address: '3.3.3.3'
-        }
-      ],
-      related_hostnames: [
-        {
-          hostname: 'lorem.com',
-          count: 1
-        },
-        {
-          hostname: 'amet.com',
-          count: 2
-        }
-      ]
-    }
+    params.require(:page)
 
-    render json: @result.to_json
+    permitted = params.permit(
+      :page,
+      included: [], 
+      excluded: []
+    )
+
+    page = permitted[:page]
+    included = permitted[:included]
+    excluded = permitted[:excluded]
+
+    results = DnsRecord.filter_by_included_and_excluded(included, excluded, page)
+
+    render json: results.to_json
   end
 
   def create

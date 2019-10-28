@@ -88,6 +88,13 @@ class DnsRecordTest < ActiveSupport::TestCase
     assert_ip_has_saved_hostnames(ip, ['sit.com', 'amet.com'])
   end
 
+  test 'Should filter DNS records including required hostnames and excluding those to be ignored' do
+    included = ['ipsum.com', 'dolor.com']
+    excluded = ['sit.com']
+    page = 1
+    results = DnsRecord.filter_by_included_and_excluded(included, excluded, page)
+  end
+
   def assert_dns_record_creation_with_hostnames(ip, hostnames)
     DnsRecord.create_or_replace_with_hostnames!(ip, hostnames)
     record = DnsRecord.find_by! ip: ip
